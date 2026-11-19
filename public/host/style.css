@@ -75,3 +75,4 @@ table.tans button { padding: 3px 8px; font-size: 13px; }
 .pcard .make-cap { opacity: .25; filter: grayscale(1); }
 .pcard .make-cap:hover { opacity: 1; filter: none; }
 .pcard.cap { border-color: var(--warn); }
+#toggle-qr.on { border-color: var(--accent); }

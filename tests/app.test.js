@@ -252,3 +252,17 @@ test('update endpoints: check, refuse during a game, apply then restart', async 
   await new Promise((r) => setTimeout(r, 700));
   assert.equal(calls.restarted, true);
 });
+
+test('host can show/hide the join QR on the screen', async () => {
+  const { srv } = await setup();
+  servers.push(srv);
+  const host = connect(srv.url);
+  const screen = connect(srv.url);
+  await emit(host, 'host:hello');
+  await emit(screen, 'screen:hello');
+  await waitFor(screen, (st) => st.showQr === true);
+  const r = await emit(host, 'host:cmd', { type: 'setShowQr', on: false });
+  assert.equal(r.ok, true); // работает и без загруженного квиза
+  await waitFor(screen, (st) => st.showQr === false);
+  await waitFor(host, (st) => st.showQr === false);
+});

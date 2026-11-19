@@ -46,6 +46,7 @@ socket.on('state', (st) => {
     firstVersion = st.appVersion;
   }
   renderUpdate(st);
+  renderQrToggle(st);
   s = st;
   deadlineAt = st.remainingMs != null ? Date.now() + st.remainingMs : null;
   render();
@@ -89,6 +90,15 @@ $('#update-btn').addEventListener('click', async () => {
     renderUpdate(s);
   }
 });
+
+// QR-код в углу экрана
+function renderQrToggle(st) {
+  const on = st.showQr !== false;
+  const b = $('#toggle-qr');
+  b.textContent = on ? 'QR на экране: вкл' : 'QR на экране: выкл';
+  b.classList.toggle('on', on);
+}
+$('#toggle-qr').addEventListener('click', () => cmd('setShowQr', { on: s?.showQr === false }));
 
 // ---------- верхняя панель ----------
 async function loadQuizList() {

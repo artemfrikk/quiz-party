@@ -2,11 +2,26 @@ html { font-size: clamp(14px, 1.45vw, 30px); }
 body { overflow: hidden; background: radial-gradient(1200px 700px at 20% 0%, #23284a 0%, var(--bg) 60%); }
 .view { position: fixed; inset: 0; display: none; padding: 2.5rem 3rem; }
 .view.on { display: flex; }
+/* заставка не закрывает экран: прозрачный слой для клика + подсказка внизу */
 #start {
-  position: fixed; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; text-align: center;
-  background: var(--bg); cursor: pointer; font-size: 1.2rem;
+  position: fixed; inset: 0; z-index: 10; display: flex; align-items: flex-end; justify-content: center; text-align: center;
+  cursor: pointer; font-size: 1rem; padding-bottom: 1.2rem;
 }
-.start-title { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+#start > div { background: rgba(0,0,0,.72); border: 1px solid var(--line); border-radius: 1rem; padding: .8rem 1.4rem; }
+#start p { margin: 0; }
+.start-title { font-size: 1.4rem; font-weight: 800; margin-bottom: .3rem; }
+
+/* QR в углу */
+#corner-qr {
+  position: fixed; top: 1rem; right: 1rem; z-index: 5; width: 9.5rem;
+  background: rgba(15,17,30,.85); border: 2px solid var(--accent); border-radius: 1rem;
+  padding: .55rem .55rem .45rem; text-align: center;
+}
+.cq-title { font-weight: 800; font-size: 1rem; margin-bottom: .35rem; }
+.cq-img { background: #fff; border-radius: .5rem; padding: .3rem; }
+.cq-img img { display: block; width: 100%; aspect-ratio: 1; }
+.cq-url { font-size: .62rem; color: var(--muted); margin-top: .3rem; word-break: break-all; }
+body.qr-on #slide, body.qr-on #scores { padding-right: 12.5rem; }
 .center-msg { margin: auto; font-size: 2.4rem; color: var(--muted); }
 
 /* лобби */

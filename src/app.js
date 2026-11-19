@@ -64,6 +64,7 @@ export async function createServer({ quizzesDir: defaultQuizzesDir, dataDir, por
   let game = null;
   let hasSavedGame = fs.existsSync(savedFile);
   let baseUrl = null;
+  let showQr = true; // QR-код для входа в углу экрана
   let videoError = null; // slideId, где не загрузилось видео
   let videoBlocked = null; // slideId, где браузер экрана не дал запустить видео
   let timer = null;
@@ -262,10 +263,10 @@ export async function createServer({ quizzesDir: defaultQuizzesDir, dataDir, por
     const now = Date.now();
     const role = socket.data.role;
     if (role === 'host') {
-      const extra = { appVersion: update?.current ?? null, updateAvailable: updateState.available?.version ?? null, baseUrl, addresses: getLanAddresses(), hasSavedGame, videoError: Boolean(game && videoError === game.slide?.id), videoBlocked: Boolean(game && videoBlocked === game.slide?.id), quizWarnings: game ? validateQuiz(game.quiz) : [] };
+      const extra = { showQr, appVersion: update?.current ?? null, updateAvailable: updateState.available?.version ?? null, baseUrl, addresses: getLanAddresses(), hasSavedGame, videoError: Boolean(game && videoError === game.slide?.id), videoBlocked: Boolean(game && videoBlocked === game.slide?.id), quizWarnings: game ? validateQuiz(game.quiz) : [] };
       return game ? { ...game.hostView(now), ...extra } : { noGame: true, ...extra };
     }
-    if (role === 'screen') return game ? { ...game.screenView(now), baseUrl } : { noGame: true, baseUrl };
+    if (role === 'screen') return game ? { ...game.screenView(now), baseUrl, showQr } : { noGame: true, baseUrl, showQr };
     if (role === 'player') {
       const v = game && socket.data.playerId ? game.playerView(socket.data.playerId, now) : null;
       return v ?? { noGame: !game, needJoin: true };
@@ -333,6 +334,7 @@ export async function createServer({ quizzesDir: defaultQuizzesDir, dataDir, por
       }
     },
     setBaseUrl({ url }) { baseUrl = String(url).slice(0, 200); },
+    setShowQr({ on }) { showQr = Boolean(on); },
     setMode({ mode }) { game.setMode(mode); },
     setCaptainMode({ on }) { game.setCaptainMode(on); },
     setCaptain({ teamId, playerId }) { game.setCaptain(teamId, playerId); },
@@ -363,7 +365,7 @@ export async function createServer({ quizzesDir: defaultQuizzesDir, dataDir, por
       return { noChange: true };
     },
   };
-  const NEEDS_GAME = new Set(Object.keys(commands).filter((k) => !['loadQuiz', 'resume', 'setBaseUrl', 'video'].includes(k)));
+  const NEEDS_GAME = new Set(Object.keys(commands).filter((k) => !['loadQuiz', 'resume', 'setBaseUrl', 'setShowQr', 'video'].includes(k)));
 
   // ---------- сокеты ----------
   io.on('connection', (socket) => {

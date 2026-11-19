@@ -41,7 +41,21 @@ function show(id) {
   document.querySelectorAll('.view').forEach((v) => v.classList.toggle('on', v.id === id));
 }
 
+// QR в углу: на всех экранах, кроме лобби (там он большой); ведущий может скрыть
+function renderCornerQr() {
+  const on = Boolean(!s.noGame && s.showQr !== false && s.phase !== 'lobby' && s.baseUrl);
+  $('#corner-qr').classList.toggle('hidden', !on);
+  document.body.classList.toggle('qr-on', on);
+  if (!on) return;
+  const url = `${s.baseUrl}/play/`;
+  const src = `/api/qr?text=${encodeURIComponent(url)}`;
+  const img = $('#corner-qr-img');
+  if (img.getAttribute('src') !== src) img.src = src;
+  $('#corner-url').textContent = url.replace(/^https?:\/\//, '');
+}
+
 function render() {
+  renderCornerQr();
   if (s.noGame) { show('waiting'); dropMedia(); return; }
   if (s.phase === 'lobby') { dropMedia(); renderLobby(); show('lobby'); }
   else if (s.phase === 'scores' || s.phase === 'final') { renderScores(); show('scores'); player?.pause(); }
