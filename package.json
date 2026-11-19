@@ -1,6 +1,6 @@
 {
   "name": "quiz-party",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Квиз для компании: пульт, экран, ответы с телефонов",
   "directories": {
     "doc": "docs"

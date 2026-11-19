@@ -30,7 +30,7 @@ const update = pkg.updateRepo ? {
   check: () => checkForUpdate({ repo: pkg.updateRepo, current: pkg.version }),
   download: (info, dir) => downloadUpdate(info, dir),
   apply: (zip) => applyUpdate(here, zip),
-  restart: () => process.exit(42),
+  restart: () => { console.log('\nОбновление установлено, перезапускаю…\n'); process.exit(42); },
 } : null;
 
 try {
