@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Квиз — редактор</title>
+  <link rel="stylesheet" href="/shared/base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">✏️ Редактор квизов</div>
+    <span id="save-state" class="save muted"></span>
+    <span class="spacer"></span>
+    <a class="btn" href="/host/">К пульту</a>
+  </header>
+  <main>
+    <aside class="panel quizzes">
+      <div class="panel-head"><h2>Квизы</h2><button id="new-quiz" class="primary">+ Новый</button></div>
+      <div id="quiz-list" class="list"></div>
+      <div id="quiz-actions" class="row-btns hidden">
+        <button id="rename-quiz">Переименовать</button>
+        <button id="dup-quiz">Копия</button>
+        <button id="export-quiz" title="Один файл с картинками и видео — для другого компьютера">Скачать файл</button>
+        <button id="del-quiz" class="danger">Удалить</button>
+      </div>
+      <button id="import-quiz" title="Файл .quiz.zip с другого компьютера">⬆ Загрузить квиз из файла</button>
+      <input id="import-file" type="file" accept=".zip,application/zip" class="hidden">
+      <div id="import-progress" class="progress hidden"><i></i></div>
+      <div class="folder">
+        <div class="small muted">Папка с квизами</div>
+        <div id="folder-path" class="folder-path"></div>
+        <div id="folder-warn" class="errors hidden"></div>
+        <div class="row-btns">
+          <button id="folder-change">Изменить…</button>
+          <button id="folder-default" class="hidden">Стандартная</button>
+        </div>
+      </div>
+    </aside>
+    <section class="panel slides">
+      <div class="panel-head"><h2 id="quiz-title">Слайды</h2></div>
+      <label id="title-wrap" class="hidden">Название на экране <input id="title-input" maxlength="80"></label>
+      <div id="slide-list" class="list"></div>
+      <div id="slide-add" class="row-btns hidden">
+        <button id="add-q" class="primary">+ Вопрос</button>
+        <button id="add-info">+ Инфо-слайд</button>
+      </div>
+    </section>
+    <section class="panel form" id="form">
+      <div class="empty muted">Выберите или создайте квиз слева</div>
+    </section>
+  </main>
+  <div id="toast" class="toast hidden"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Квиз — экран</title>
+  <link rel="stylesheet" href="/shared/base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="start">
+    <div>
+      <div class="start-title">Экран квиза</div>
+      <p>Перетащите это окно на проектор и кликните в любом месте —<br>оно развернётся на весь экран, и включится звук.</p>
+    </div>
+  </div>
+
+  <section id="waiting" class="view"><div class="center-msg">Ведущий выбирает квиз…</div></section>
+
+  <section id="lobby" class="view">
+    <div class="lobby-left">
+      <h1 id="lobby-title"></h1>
+      <p class="join-hint">Сканируйте QR-код и введите имя</p>
+      <div class="qr"><img id="qr" alt="QR-код"></div>
+      <div id="join-url" class="join-url"></div>
+    </div>
+    <div class="lobby-right">
+      <div id="lobby-count" class="lobby-count"></div>
+      <div id="lobby-players"></div>
+    </div>
+  </section>
+
+  <section id="slide" class="view">
+    <div id="s-text" class="s-text"></div>
+    <div id="s-media" class="s-media"></div>
+    <div id="s-options" class="s-options"></div>
+    <div id="s-footer" class="s-footer">
+      <div id="s-count"></div>
+      <div id="s-timer" class="s-timer"></div>
+      <div id="s-num" class="muted"></div>
+    </div>
+  </section>
+
+  <section id="scores" class="view">
+    <h1 id="scores-title">Таблица</h1>
+    <div id="scores-list" class="scores-list"></div>
+    <div id="scores-top" class="scores-top"></div>
+  </section>
+
+  <div id="offline" class="hidden">Нет связи с сервером…</div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

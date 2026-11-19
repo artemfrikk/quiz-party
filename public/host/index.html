@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Квиз — пульт</title>
+  <link rel="stylesheet" href="/shared/base.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">🎛️ Пульт</div>
+    <label>Квиз <select id="quiz-select"></select></label>
+    <button id="load-quiz">Загрузить</button>
+    <label>Адрес для телефонов <select id="addr-select"></select></label>
+    <span class="spacer"></span>
+    <button id="open-screen" class="primary">Открыть экран</button>
+    <a class="btn" href="/editor/" target="_blank">Редактор</a>
+    <a class="btn" id="csv" href="/api/export.csv">Скачать результаты</a>
+    <button id="check-update" class="ghost small" title="Проверить обновления"></button>
+  </header>
+  <div id="update" class="banner hidden"><span id="update-text"></span> <button id="update-btn" class="primary">Обновить</button></div>
+  <div id="resume" class="banner hidden">
+    Есть сохранённая игра. <button id="resume-btn" class="primary">Продолжить прошлую игру</button>
+  </div>
+  <div id="nogame" class="nogame hidden">Выберите квиз сверху и нажмите «Загрузить».<br><span class="muted">Затем «Открыть экран», перетащите окно на проектор и кликните по нему — оно развернётся на весь экран.</span></div>
+
+  <main id="main" class="hidden">
+    <section class="panel people">
+      <div class="panel-head">
+        <h2>Участники <span id="people-count" class="muted"></span></h2>
+        <div class="seg" id="mode">
+          <button data-mode="solo">Каждый сам</button><button data-mode="teams">Команды</button>
+        </div>
+      </div>
+      <div id="team-tools" class="row-tools"><button id="add-team">+ Команда</button><label class="cap-toggle" title="За команду отвечает только капитан, остальные голосуют"><input type="checkbox" id="captain-mode"> Отвечает капитан</label><span class="muted small">Перетаскивайте людей мышкой</span></div>
+      <div id="columns" class="columns"></div>
+    </section>
+
+    <section class="panel game">
+      <div class="panel-head">
+        <h2 id="slide-title">—</h2>
+        <select id="jump"></select>
+      </div>
+      <div id="quiz-warn" class="warn hidden"></div>
+      <div id="slide-card" class="slide-card"></div>
+      <div id="video-ctl" class="video-ctl hidden">
+        <span class="muted">Видео на экране:</span>
+        <button data-v="restart" title="С начала фрагмента">⏮</button>
+        <button data-v="back" title="−5 с">−5с</button>
+        <button data-v="play">▶</button>
+        <button data-v="pause">⏸</button>
+        <button data-v="fwd" title="+5 с">+5с</button>
+      </div>
+      <div id="video-warn" class="warn hidden">⚠ Видео не загрузилось (нет интернета или ролик закрыт для встраивания). Вопрос показан без видео.</div>
+      <div id="video-blocked" class="warn hidden">⚠ Браузер экрана не дал запустить видео. Кликните один раз по окну экрана — ролик продолжится.</div>
+      <div class="status-line"><span id="answered"></span><span id="timer" class="timer"></span></div>
+      <div class="controls">
+        <button id="prev" title="←">← Назад</button>
+        <button id="primary" class="primary big" title="→ или Пробел"></button>
+        <button id="close">Закрыть приём</button>
+        <button id="reveal">Показать ответ</button>
+        <button id="scores">Таблица</button>
+        <button id="next">Дальше →</button>
+        <button id="finish">Финал</button>
+      </div>
+      <div id="answer-chips" class="chips"></div>
+      <div id="text-answers"></div>
+      <div id="next-card" class="next-card"></div>
+    </section>
+
+    <section class="panel score">
+      <div class="panel-head"><h2>Очки</h2></div>
+      <div id="score-list" class="score-list"></div>
+      <form id="adjust" class="adjust">
+        <div class="small muted">Свои очки</div>
+        <select id="adj-target"></select>
+        <div class="adj-row">
+          <input id="adj-delta" type="number" step="1" placeholder="±очки" required>
+          <input id="adj-note" placeholder="за что (необязательно)" maxlength="100">
+        </div>
+        <button class="primary" type="submit">Применить</button>
+      </form>
+      <details class="history"><summary>История правок</summary><div id="history"></div></details>
+    </section>
+  </main>
+  <div id="toast" class="toast hidden"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
