@@ -59,7 +59,8 @@ export async function createPlayer(container, media, quizName, opts = {}) {
     const div = document.createElement('div');
     holder.append(div);
     impl = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => { onError?.(new Error('YouTubeTimeout')); reject(new Error('YouTubeTimeout')); }, 10000);
+      // не дождались — убираем недогруженный плеер, чтобы он не остался висеть
+      const timeout = setTimeout(() => { try { p.destroy(); } catch { /* нет */ } onError?.(new Error('YouTubeTimeout')); reject(new Error('YouTubeTimeout')); }, 10000);
       const p = new YT.Player(div, {
         videoId: id,
         width: '100%',
@@ -117,17 +118,19 @@ export async function createPlayer(container, media, quizName, opts = {}) {
       onPauseReached?.(t);
     }
   }
+  // следим за временем только пока ждём точку остановки: без цели цикл не крутится
   function loop() {
+    raf = 0;
     check();
-    if (!destroyed) raf = requestAnimationFrame(loop);
+    if (!destroyed && target !== null) raf = requestAnimationFrame(loop);
   }
-  raf = requestAnimationFrame(loop);
 
   return {
     playSegment(from, to) {
       target = to ?? null;
       impl.seek(from ?? 0);
       impl.play();
+      if (target !== null && !raf) raf = requestAnimationFrame(loop);
     },
     show(at) { target = null; impl.seek(at ?? 0); impl.pause(); },
     play: () => impl.play(),

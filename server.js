@@ -25,7 +25,9 @@ const shouldOpen = process.argv.includes('--open');
 const pkg = JSON.parse(fs.readFileSync(path.join(here, 'package.json'), 'utf8'));
 try { cleanupLeftovers(here); } catch { /* не страшно */ }
 // Код 42 — сигнал start.bat/start.command запустить сервер заново (уже с новой версией)
-const update = pkg.updateRepo ? {
+// В папке с кодом (есть .git) не обновляемся: это заменило бы node_modules без пакетов для разработки
+const isDevCheckout = fs.existsSync(path.join(here, '.git'));
+const update = pkg.updateRepo && !isDevCheckout ? {
   current: pkg.version,
   check: () => checkForUpdate({ repo: pkg.updateRepo, current: pkg.version }),
   download: (info, dir) => downloadUpdate(info, dir),
